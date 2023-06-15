@@ -1,6 +1,7 @@
 package dev.mechstack.ms0623.model;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 import dev.mechstack.ms0623.cli.RentalAgreementCLI;
@@ -20,21 +21,23 @@ public class RentalAgreementModel {
   protected BigDecimal discountAmount;
   protected BigDecimal finalCharge;
 
-  public RentalAgreementModel(ToolModel tool, Integer rentalDayCount, Integer discountPercent, Date checkoutDate) {
+  public RentalAgreementModel(ToolModel tool, Integer rentalDayCount, Integer discountPercent, Date checkoutDate, Integer chargeableDayCount) {
     toolCode = tool.getToolCode();
     toolType = tool.getToolType().getToolType();
     toolBrand = tool.getBrand();
     this.rentalDayCount = rentalDayCount;
     this.checkoutDate = checkoutDate;
     dailyRentalCharge = tool.getToolType().getDailyCharge();
-
-    // TODO
-    dueDate = checkoutDate;
-    chargeableDayCount = 1;
-    prediscountCharge = new BigDecimal(2000003);
     this.discountPercent = discountPercent;
-    discountAmount = new BigDecimal(2651616191.23);
-    finalCharge = new BigDecimal(0055156165);
+    this.chargeableDayCount = chargeableDayCount;
+    prediscountCharge = new BigDecimal(this.chargeableDayCount).multiply(dailyRentalCharge);
+    discountAmount = prediscountCharge.multiply(new BigDecimal(this.discountPercent)).divide(new BigDecimal(100));
+    finalCharge = prediscountCharge.subtract(discountAmount);
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(checkoutDate);
+    calendar.add(Calendar.DAY_OF_YEAR, this.rentalDayCount);
+    dueDate = calendar.getTime();
   }
 
   public String getToolCode() {

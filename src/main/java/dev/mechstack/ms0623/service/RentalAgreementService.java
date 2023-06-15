@@ -2,6 +2,7 @@ package dev.mechstack.ms0623.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.NoSuchElementException;
 
 import java.text.DecimalFormat;
@@ -9,12 +10,37 @@ import java.text.SimpleDateFormat;
 
 import dev.mechstack.ms0623.form.CheckoutForm;
 import dev.mechstack.ms0623.model.RentalAgreementModel;
+import dev.mechstack.ms0623.model.ToolModel;
 import dev.mechstack.ms0623.repository.ToolsRepository;
 
 public class RentalAgreementService {
 
   public static RentalAgreementModel getRentalAgreementByCheckoutForm(CheckoutForm checkoutForm, ToolsRepository tools) throws NoSuchElementException, IOException {
-    return new RentalAgreementModel(tools.get(checkoutForm.toolCode), checkoutForm.rentalDayCount, checkoutForm.discountPercent, checkoutForm.checkoutDate);
+    ToolModel tool = tools.get(checkoutForm.toolCode);
+
+    Integer chargeableDayCount = 0;
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(checkoutForm.checkoutDate);
+
+    // TODO Request clarification
+    for (int i = 0; i < checkoutForm.rentalDayCount; i++) {
+      if (!tool.getToolType().getHolidayCharge() && CalendarService.isHoliday(calendar)) {
+        // Pass
+      }
+      else if (!tool.getToolType().getWeekendCharge() && CalendarService.isWeekend(calendar)) {
+        // Pass
+      }
+      else if (!tool.getToolType().getWeekdayCharge() && CalendarService.isWeekday(calendar)) {
+        // Pass
+      }
+      else {
+        chargeableDayCount += 1;
+      }
+      calendar.add(Calendar.DAY_OF_YEAR, 1);
+    }
+
+    return new RentalAgreementModel(tool, checkoutForm.rentalDayCount, checkoutForm.discountPercent, checkoutForm.checkoutDate, chargeableDayCount);
   }
 
   public static String getRentalAgreementPrintFormat(RentalAgreementModel rentalAgreement) {
