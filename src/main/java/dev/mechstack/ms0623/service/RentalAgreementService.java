@@ -23,7 +23,6 @@ public class RentalAgreementService {
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(checkoutForm.checkoutDate);
 
-    // TODO Request clarification
     for (int i = 0; i < checkoutForm.rentalDayCount; i++) {
       if (!tool.getToolType().getHolidayCharge() && CalendarService.isHoliday(calendar)) {
         // Pass
