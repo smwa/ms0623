@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import dev.mechstack.ms0623.model.ToolType;
 
@@ -18,6 +19,16 @@ public class ToolTypes {
 
   public ToolTypes(String filePath) {
     this.filePath = filePath;
+  }
+
+  public ToolType get(String toolTypeCode) throws IOException, NoSuchElementException {
+    List<ToolType> toolTypes = getAll();
+    for (ToolType toolType : toolTypes) {
+      if (toolType.getToolType().equals(toolTypeCode)) {
+        return toolType;
+      }
+    }
+    throw new NoSuchElementException(toolTypeCode);
   }
 
   public List<ToolType> getAll() throws IOException {
