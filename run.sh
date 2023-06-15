@@ -1,2 +1,2 @@
 #!/bin/env bash
-mvn -q clean compile exec:java
+mvn clean compile exec:java
