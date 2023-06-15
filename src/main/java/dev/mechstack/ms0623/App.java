@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import dev.mechstack.ms0623.model.Tool;
-import dev.mechstack.ms0623.model.ToolType;
 import dev.mechstack.ms0623.repository.ToolTypes;
 import dev.mechstack.ms0623.repository.Tools;
 
@@ -34,7 +33,6 @@ public class App
     try {
       System.out.println(toolTypes.getAll().get(0).getToolType());
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
