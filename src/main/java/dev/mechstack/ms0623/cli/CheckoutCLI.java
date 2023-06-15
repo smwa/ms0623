@@ -7,13 +7,13 @@ import java.util.Scanner;
 
 import dev.mechstack.ms0623.exception.ValidationException;
 import dev.mechstack.ms0623.form.CheckoutForm;
-import dev.mechstack.ms0623.model.Tool;
-import dev.mechstack.ms0623.repository.Tools;
+import dev.mechstack.ms0623.model.ToolModel;
+import dev.mechstack.ms0623.repository.ToolsRepository;
 
 public class CheckoutCLI {
-  public static CheckoutForm checkoutForm(Tools toolsRepository) throws IOException {
+  public static CheckoutForm checkoutForm(ToolsRepository toolsRepository) throws IOException {
     Scanner scanner = null;
-    List<Tool> tools = toolsRepository.getAll();
+    List<ToolModel> tools = toolsRepository.getAll();
     try {
       scanner = new Scanner(System.in);
       while (true) {

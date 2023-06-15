@@ -2,7 +2,7 @@ package dev.mechstack.ms0623.model;
 
 import java.math.BigDecimal;
 
-public class ToolType {
+public class ToolTypeModel {
 
   protected String toolType;
   protected BigDecimal dailyCharge;
@@ -10,7 +10,7 @@ public class ToolType {
   protected Boolean weekendCharge;
   protected Boolean holidayCharge;
 
-  public ToolType(String toolType, BigDecimal dailyCharge, Boolean weekdayCharge, Boolean weekendCharge, Boolean holidayCharge) {
+  public ToolTypeModel(String toolType, BigDecimal dailyCharge, Boolean weekdayCharge, Boolean weekendCharge, Boolean holidayCharge) {
     this.toolType = toolType;
     this.dailyCharge = dailyCharge;
     this.weekdayCharge = weekdayCharge;

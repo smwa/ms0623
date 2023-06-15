@@ -8,23 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import dev.mechstack.ms0623.model.Tool;
-import dev.mechstack.ms0623.model.ToolType;
+import dev.mechstack.ms0623.model.ToolModel;
+import dev.mechstack.ms0623.model.ToolTypeModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Tools {
+public class ToolsRepository {
 
   protected String filePath;
-  protected ToolTypes toolTypes;
+  protected ToolTypesRepository toolTypes;
 
-  public Tools(ToolTypes toolTypes, String filePath) {
+  public ToolsRepository(ToolTypesRepository toolTypes, String filePath) {
     this.toolTypes = toolTypes;
     this.filePath = filePath;
   }
 
-  public List<Tool> getAll() throws IOException, NoSuchElementException {
+  public List<ToolModel> getAll() throws IOException, NoSuchElementException {
     InputStream jsonResource = getClass().getResourceAsStream(filePath);
     if (jsonResource == null) {
       throw new FileNotFoundException("Tools json file not found");
@@ -32,12 +32,12 @@ public class Tools {
     String json = new String(jsonResource.readAllBytes(), StandardCharsets.UTF_8);
 
     JSONArray jsonArray = new JSONArray(json);
-    List<Tool> tools = new ArrayList<>();
+    List<ToolModel> tools = new ArrayList<>();
 
     for (int i = 0; i < jsonArray.length(); i++) {
       JSONObject jsonObject = jsonArray.getJSONObject(i);
-      ToolType toolType = toolTypes.get(jsonObject.getString("toolType"));
-      Tool tool = new Tool(jsonObject.getString("toolCode"), toolType, jsonObject.getString("brand"));
+      ToolTypeModel toolType = toolTypes.get(jsonObject.getString("toolType"));
+      ToolModel tool = new ToolModel(jsonObject.getString("toolCode"), toolType, jsonObject.getString("brand"));
       tools.add(tool);
     }
 

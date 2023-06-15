@@ -1,12 +1,12 @@
 package dev.mechstack.ms0623.model;
 
-public class Tool {
+public class ToolModel {
 
   protected String toolCode;
-  protected ToolType toolType;
+  protected ToolTypeModel toolType;
   protected String brand;
 
-  public Tool(String toolCode, ToolType toolType, String brand) {
+  public ToolModel(String toolCode, ToolTypeModel toolType, String brand) {
     this.toolCode = toolCode;
     this.toolType = toolType;
     this.brand = brand;
@@ -16,7 +16,7 @@ public class Tool {
     return toolCode;
   }
 
-  public ToolType getToolType() {
+  public ToolTypeModel getToolType() {
     return toolType;
   }
 

@@ -4,21 +4,21 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import dev.mechstack.ms0623.model.Tool;
-import dev.mechstack.ms0623.repository.ToolTypes;
-import dev.mechstack.ms0623.repository.Tools;
+import dev.mechstack.ms0623.model.ToolModel;
+import dev.mechstack.ms0623.repository.ToolTypesRepository;
+import dev.mechstack.ms0623.repository.ToolsRepository;
 
 public class App 
 {
   public static void main( String[] args )
   {
 
-    ToolTypes toolTypes;
-    toolTypes = new ToolTypes("/toolTypes.json");
+    ToolTypesRepository toolTypes;
+    toolTypes = new ToolTypesRepository("/toolTypes.json");
 
-    List<Tool> tools;
+    List<ToolModel> tools;
     try {
-      tools = new Tools(toolTypes, "/tools.json").getAll();
+      tools = new ToolsRepository(toolTypes, "/tools.json").getAll();
     } catch (IOException e) {
       System.err.println("Tools json file is missing or corrupt");
       return;
