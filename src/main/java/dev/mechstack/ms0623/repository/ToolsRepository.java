@@ -24,6 +24,16 @@ public class ToolsRepository {
     this.filePath = filePath;
   }
 
+  public ToolModel get(String toolCode) throws IOException, NoSuchElementException {
+    List<ToolModel> tools = getAll();
+    for (ToolModel tool : tools) {
+      if (tool.getToolCode().equals(toolCode)) {
+        return tool;
+      }
+    }
+    throw new NoSuchElementException(toolCode);
+  }
+
   public List<ToolModel> getAll() throws IOException, NoSuchElementException {
     InputStream jsonResource = getClass().getResourceAsStream(filePath);
     if (jsonResource == null) {

@@ -3,6 +3,7 @@ package dev.mechstack.ms0623.cli;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import dev.mechstack.ms0623.exception.ValidationException;
@@ -31,6 +32,13 @@ public class CheckoutCLI {
           System.out.println("");
         }
         checkoutForm.toolCode = scanner.nextLine().toUpperCase();
+        // Check that tool exists
+        try {
+          toolsRepository.get(checkoutForm.toolCode);
+        }
+        catch (NoSuchElementException e) {
+          checkoutForm.toolCode = "";
+        }
 
         System.out.println("Enter how many days to checkout. Must be at least 1.");
         checkoutForm.rentalDayCount = Integer.parseInt(scanner.nextLine());
