@@ -7,36 +7,42 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import dev.mechstack.ms0623.model.Tool;
+import dev.mechstack.ms0623.model.ToolType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Tools {
+public class ToolTypes {
 
   protected String filePath;
 
-  public Tools(String filePath) {
+  public ToolTypes(String filePath) {
     this.filePath = filePath;
   }
 
-  public List<Tool> getAll() throws IOException {
+  public List<ToolType> getAll() throws IOException {
     InputStream jsonResource = getClass().getResourceAsStream(filePath);
     if (jsonResource == null) {
-      throw new FileNotFoundException("Tools json file not found");
+      throw new FileNotFoundException("Tool types json file not found");
     }
     String json = new String(jsonResource.readAllBytes(), StandardCharsets.UTF_8);
 
     JSONArray jsonArray = new JSONArray(json);
-    List<Tool> tools = new ArrayList<>();
+    List<ToolType> toolTypes = new ArrayList<>();
 
     for (int i = 0; i < jsonArray.length(); i++) {
       JSONObject jsonObject = jsonArray.getJSONObject(i);
-      Tool tool = new Tool(jsonObject.getString("toolCode"), jsonObject.getString("toolType"), jsonObject.getString("brand"));
-      tools.add(tool);
+      ToolType toolType = new ToolType(
+        jsonObject.getString("toolType"),
+        jsonObject.getBigDecimal("dailyCharge"),
+        jsonObject.getBoolean("weekdayCharge"),
+        jsonObject.getBoolean("weekendCharge"),
+        jsonObject.getBoolean("holidayCharge")
+      );
+      toolTypes.add(toolType);
     }
 
-    return tools;
+    return toolTypes;
   }
 
 }

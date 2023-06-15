@@ -6,6 +6,12 @@ public class Tool {
   protected String toolType;
   protected String brand;
 
+  public Tool(String toolCode, String toolType, String brand) {
+    this.toolCode = toolCode;
+    this.toolType = toolType;
+    this.brand = brand;
+  }
+
   public String getToolCode() {
     return toolCode;
   }
