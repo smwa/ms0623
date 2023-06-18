@@ -1,7 +1,7 @@
 package dev.mechstack.ms0623.cli;
 
 import java.io.IOException;
-import java.util.Calendar;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -24,7 +24,10 @@ public class CheckoutCLI {
       for (int i = 0; i < tools.size(); i++) {
         System.out.format(FORMAT_STRING, tools.get(i).getToolCode(), tools.get(i).getToolType().getToolType(), tools.get(i).getBrand());
       }
-      checkoutForm.toolCode = scanner.nextLine().toUpperCase().strip();
+      try {
+        checkoutForm.toolCode = scanner.nextLine().toUpperCase().strip();
+      }
+      catch (InputMismatchException e) {}
       // Check that tool exists
       try {
         toolsRepository.get(checkoutForm.toolCode);
@@ -33,23 +36,22 @@ public class CheckoutCLI {
         checkoutForm.toolCode = "";
       }
 
+      System.out.println("Enter a checkout date, in the format mm/dd/yy.");
+      checkoutForm.setCheckoutDate(scanner.nextLine());
+
       System.out.println("Enter how many days to checkout. Must be at least 1.");
-      checkoutForm.rentalDayCount = scanner.nextInt();
+      try {
+        checkoutForm.rentalDayCount = scanner.nextInt();
+      }
+      catch (InputMismatchException e) {}
       scanner.nextLine();
 
       System.out.println("Enter a discount amount in percent as a whole number. Must be from 0 to 100.");
-      checkoutForm.discountPercent = scanner.nextInt();
-      scanner.nextLine();
-
-      System.out.println("Enter a checkout date, in the format mm/dd/yy.");
-      String[] dateParts = scanner.nextLine().split("/", 3);
-      if (dateParts.length >= 3) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, 2000 + Integer.parseInt(dateParts[2]));
-        calendar.set(Calendar.MONTH, Integer.parseInt(dateParts[0]) - 1);
-        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateParts[1]));
-        checkoutForm.checkoutDate = calendar.getTime();
+      try {
+        checkoutForm.discountPercent = scanner.nextInt();
       }
+      catch (InputMismatchException e) {}
+      scanner.nextLine();
       
       try {
         checkoutForm.validate();

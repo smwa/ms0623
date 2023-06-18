@@ -1,5 +1,6 @@
 package dev.mechstack.ms0623.form;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import dev.mechstack.ms0623.exception.ValidationException;
@@ -9,6 +10,30 @@ public class CheckoutForm {
   public Integer rentalDayCount = 0;
   public Integer discountPercent = 0;
   public Date checkoutDate;
+
+  public void setCheckoutDate(String checkoutDateString) {
+    if (checkoutDateString == null) {
+      checkoutDate = null;
+      return;
+    }
+    String[] dateParts = checkoutDateString.split("/", 3);
+    if (dateParts.length < 3) {
+      checkoutDate = null;
+      return;
+    }
+    Calendar calendar = Calendar.getInstance();
+    calendar.setLenient(false);
+    try {
+      calendar.set(Calendar.YEAR, 2000 + Integer.parseInt(dateParts[2]));
+      calendar.set(Calendar.MONTH, Integer.parseInt(dateParts[0]) - 1);
+      calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateParts[1]));
+      checkoutDate = calendar.getTime();
+    }
+    catch (IllegalArgumentException e) {
+      checkoutDate = null;
+      return;
+    }
+  }
 
   public void validate() throws ValidationException {
     if (toolCode.length() != 4) {
